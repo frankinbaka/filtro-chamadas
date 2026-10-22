@@ -21,3 +21,7 @@ O GitHub compila o app automaticamente a cada alteração. O arquivo mais recent
 2. Abra o app e toque em **Fazer agora** nos dois passos: definir como app de filtro de chamadas e permitir acesso aos contatos.
 
 Requer Android 10 ou mais novo.
+
+---
+
+Criação By Frankin + Claude
