@@ -1,0 +1,44 @@
+# Criação By Frankin + Claude
+name: Compilar APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  compilar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.7"
+
+      - name: Preparar assinatura
+        run: base64 -d app/assinatura.keystore.b64 > app/assinatura.keystore
+
+      - name: Gerar APK
+        run: gradle assembleRelease --no-daemon
+
+      - name: Renomear arquivo
+        run: cp app/build/outputs/apk/release/app-release.apk FiltroChamadas.apk
+
+      - name: Publicar para download
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: Filtro de Chamadas (versão ${{ github.run_number }})
+          make_latest: true
+          files: FiltroChamadas.apk
+          body: |
+            Para instalar: abra este link pelo celular e baixe o arquivo **FiltroChamadas.apk**.
